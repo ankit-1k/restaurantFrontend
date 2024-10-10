@@ -11,7 +11,7 @@ const Reservation = () => {
     phone: "",
     table: [],
     people: 1,
-    duration: 1,
+    duration: "1", // Default to 1 hour
     specialRequest: "",
   });
 
@@ -106,17 +106,20 @@ const Reservation = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="duration" className="form-label">Duration (hours)</label>
-          <input
-            type="number"
-            className="form-control"
+          <label htmlFor="duration" className="form-label">Duration</label>
+          <select
+            className="form-select"
             id="duration"
             name="duration"
             value={formData.duration}
             onChange={handleChange}
-            min="1"
             required
-          />
+          >
+            <option value="1">1 hour</option>
+            <option value="2">2 hours</option>
+            <option value="3">3 hours</option>
+            <option value="4">4 hours</option>
+          </select>
         </div>
         <div className="mb-3">
           <label htmlFor="phone" className="form-label">Phone</label>
@@ -190,7 +193,6 @@ const Reservation = () => {
                       margin: "10px",
                     }}
                     onClick={() => handleTableSelection(tableNumber)}
-                    // Disable the table if already booked
                   ></i>
                 ))}
               </div>
