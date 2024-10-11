@@ -136,7 +136,7 @@ const TermsContent = () => {
       <div className="container mt-5">
         <div className="row">
           <div className="col">
-            <h5>Contact Us</h5>
+            <h4>Contact Us :</h4>
             <p>
               If you have any questions about these Terms and Conditions, please
               contact us at: XXXXX

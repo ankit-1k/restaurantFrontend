@@ -15,6 +15,7 @@ import Login from "./Auth/Login";
 import PrivateRoute from "./Auth/PrivateRoute";
 import Register from "./Auth/Register";
 import Terms from "./Components/Terms/Terms";
+import Privacy from "./Components/Privacy/Privacy";
 
 const App = () => {
   const about = "About Us";
@@ -25,6 +26,7 @@ const App = () => {
   const testimonial = "Testimonial";
   const contact = "Contact Us";
   const terms = "Terms & Conditions";
+  const privacy='Privacy & Policy'
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogin = () => {
@@ -56,6 +58,7 @@ const App = () => {
         />
         <Route path="/contact" element={<Contact props={contact} />} />
         <Route path="/terms" element={<Terms props={terms} />} />
+        <Route path="/privacy" element={<Privacy props={privacy} />} />
       </Routes>
     </Router>
   );

@@ -13,7 +13,7 @@ const Footer = () => {
                         <p class="btn btn-link" onClick={()=>navigate('/about')}>About Us</p>
                         <p class="btn btn-link" onClick={()=>navigate('/contact')}>Contact Us</p>
                         <p class="btn btn-link" onClick={()=>navigate('/booking')}>Reservation</p>
-                        <p class="btn btn-link" onClick={()=>navigate('/')}>Privacy Policy</p>
+                        <p class="btn btn-link" onClick={()=>navigate('/privacy')}>Privacy Policy</p>
                         <p class="btn btn-link" onClick={()=>navigate('/terms')}>Terms & Condition</p>
                     </div>
                     <div class="col-lg-3 col-md-6">
@@ -49,10 +49,9 @@ const Footer = () => {
                 <div class="copyright">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a class="border-bottom" href="#">TasteOn</a>, All Right Reserved. 
 							
-							Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br/><br/>
-                            Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+							Designed & Developed By <a class="border-bottom text-danger" href="https://ankitkumarpanda.vercel.app/">Ankit Kumar</a><br/><br/>
                         </div>
                         <div class="col-md-6 text-center text-md-end">
                             <div class="footer-menu">
