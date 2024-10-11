@@ -172,7 +172,7 @@ const Reservation = () => {
                       <label htmlFor="phone">Phone No.</label>
                     </div>
                   </div>
-                  <div className="col-12">
+                  <div className="col-md-6">
                     <div className="form-floating">
                       <input
                         type="text"
@@ -180,11 +180,12 @@ const Reservation = () => {
                         className="form-control"
                         id="table1"
                         placeholder="Selected Tables"
-                        value={tblArr.join(", ")} // Display the selected tables
+                        value={tblArr.join(", ")} 
                         readOnly
                       />
                       <label htmlFor="table1">Selected Tables</label>
-                      <button
+                    </div>
+                    <button
                         type="button"
                         className="btn btn-outline-secondary mt-2"
                         data-bs-toggle="modal"
@@ -192,7 +193,6 @@ const Reservation = () => {
                       >
                         View Tables
                       </button>
-                    </div>
                   </div>
                   <button type="submit" className="btn btn-primary w-100 py-3">
                     Reserve
