@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const Reservation = () => {
+const Reservation = ({ user }) => {
   const [tblArr, setTblArr] = useState([]);
   const [bookedTables, setBookedTables] = useState([]);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: user?.username || "",
+    email: user?.email || "",
     datetime: "",
     phone: "",
     table: [],
@@ -14,7 +14,6 @@ const Reservation = () => {
     duration: "1", // Default to 1 hour
     specialRequest: "",
   });
-
   useEffect(() => {
     if (formData.datetime && formData.duration) {
       checkTableAvailability();
@@ -180,19 +179,19 @@ const Reservation = () => {
                         className="form-control"
                         id="table1"
                         placeholder="Selected Tables"
-                        value={tblArr.join(", ")} 
+                        value={tblArr.join(", ")}
                         readOnly
                       />
                       <label htmlFor="table1">Selected Tables</label>
                     </div>
                     <button
-                        type="button"
-                        className="btn btn-outline-secondary mt-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#seatModal"
-                      >
-                        View Tables
-                      </button>
+                      type="button"
+                      className="btn btn-outline-secondary mt-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#seatModal"
+                    >
+                      View Tables
+                    </button>
                   </div>
                   <button type="submit" className="btn btn-primary w-100 py-3">
                     Reserve

@@ -5,12 +5,13 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone]= useState('')
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/api/auth/register', { username, email, password });
+      const response = await axios.post('http://localhost:4000/api/auth/register', { username, email, password,phone });
       alert(response.data.message);
     } catch (error) {
       setError('Error in registration');
@@ -32,6 +33,13 @@ const Register = () => {
           value={email} 
           onChange={(e) => setEmail(e.target.value)} 
           placeholder="Email" 
+          required 
+        />
+        <input 
+          type="text" 
+          value={phone} 
+          onChange={(e) => setPhone(e.target.value)} 
+          placeholder="Phone" 
           required 
         />
         <input 

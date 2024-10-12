@@ -8,7 +8,8 @@ import Testimonial from './Testimonial'
 import Footer from '../Footer'
 import Banner from './Banner'
 
-const Home = () => {
+const Home = ({ user }) => {
+    
     return (
         <div>
             <Navbar />
@@ -57,7 +58,7 @@ const Home = () => {
             </div>
             <AboutSec />
             <Menu />
-            <Reaservation />
+            <Reaservation/>
             <Team />
             <Testimonial />
             <Footer/>

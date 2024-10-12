@@ -26,31 +26,42 @@ const App = () => {
   const testimonial = "Testimonial";
   const contact = "Contact Us";
   const terms = "Terms & Conditions";
-  const privacy='Privacy & Policy'
+  const privacy = "Privacy & Policy";
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true); // User successfully logged in
+  const [userData, setUserData] = useState(null);
+  const handleLogin = (user) => {
+    setIsAuthenticated(true);
+    setIsAuthenticated(true);
+    setUserData(user);
+    console.log(user)
   };
-
   return (
     <Router>
       <Routes>
-      <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/" element={<Login onLogin={handleLogin} />} /> {/* Ensure this uses onLogin */}
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/" element={<Login onLogin={handleLogin} />} />{" "}
         <Route path="/register" element={<Register />} />
         <Route
           path="/home"
           element={
             <PrivateRoute isAuthenticated={isAuthenticated}>
-              <Home />
+              <Home user={userData} />
             </PrivateRoute>
           }
         />
         <Route path="/about" element={<About props={about} />} />
         <Route path="/services" element={<Services props={services} />} />
         <Route path="/menu" element={<MenuTab props={foodmenu} />} />
-        <Route path="/booking" element={<Booking props={booking} />} />
+        {/* <Route path="/booking" element={<Booking props={booking} user={userData} />} /> */}
+        <Route
+          path="/booking"
+          element={
+            <PrivateRoute isAuthenticated={isAuthenticated}>
+              <Booking props={booking} user={userData} />
+            </PrivateRoute>
+          }
+        />
         <Route path="/team" element={<Ourteam props={ourteam} />} />
         <Route
           path="/testimonial"

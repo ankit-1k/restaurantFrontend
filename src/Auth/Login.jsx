@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('a@g.co');
+  const [password, setPassword] = useState('a');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -12,21 +12,19 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:4000/api/auth/login', { email, password });
-      
+      console.log('Response:', response.data); // Check the response
+
       if (response.status === 200) {
+        const { username, email } = response.data.user;
         alert(response.data.message);
-        onLogin(); // Update authentication state
+        onLogin({ username, email }); // Pass user data to onLogin
         navigate('/home'); // Redirect to home
-      } else {
-        setError('Invalid email or password'); // Handle unexpected response
       }
     } catch (error) {
-      console.error('Login error:', error); // Log error for debugging
-      setError('Invalid email or password'); // Set error message
+      console.error('Login error:', error.response ? error.response.data : error.message);
+      setError('Invalid email or password');
     }
-  };
-  
-  
+  }; 
 
   return (
     <div>
