@@ -52,7 +52,6 @@ const Menu = ({ user }) => {
       .reduce((total, item) => total + parseFloat(item.price), 0)
       .toFixed(2);
   };
-
   const placeOrder = async () => {
     const orderData = {
       name: name,
@@ -60,20 +59,22 @@ const Menu = ({ user }) => {
       items: cart,
       total: calculateTotal(),
     };
-
+  
     try {
       const response = await axios.post("http://localhost:4000/api/order", orderData);
-      if (response.status === 200) {
-        console.log(response.data.message);
-        setCart([]); // Clear cart after placing order
+      console.log(response); 
+  
+      
+      if (response.status === 200 || response.status === 201) {
+        console.log(response.data.message); 
+        setCart([]); 
       } else {
-        console.log("Failed to place order");
+        console.log("Failed to place order", response.status); 
       }
     } catch (error) {
       console.error("Error placing order:", error);
     }
   };
-
   return (
     <div>
       <div className="container-xxl py-5">
