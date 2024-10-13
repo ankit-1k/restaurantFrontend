@@ -4,6 +4,7 @@ const Menu = ({ user }) => {
   const [cart, setCart] = useState([]);
   const [name, setName] = useState("");
   const [table, setTable] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [emtyDnone,setEmtDnone]=useState('d-none')
   const [selectedTable, setSelectedTable] = useState(null);
   useEffect(() => {
     if (user) {
@@ -11,7 +12,12 @@ const Menu = ({ user }) => {
     } else {
       // setName('')
     }
-  }, []);
+    if(cart.length===0){
+      setEmtDnone('d-none')
+    }else{
+      setEmtDnone('d-block')
+    }
+  }, [cart]);
   const foodMenu = [
     {
       category: "Breakfast",
@@ -21,14 +27,14 @@ const Menu = ({ user }) => {
           name: "Margherita Pizza",
           message:
             "A delicious classic pizza with fresh mozzarella, basil, and tomato sauce.",
-          price: "$12.99",
+          price: "12.99",
         },
         {
           img: "https://up.yimg.com/ib/th?id=OIP.maQpFJiRuDMauaTZ3N7KiQHaEo&pid=Api&rs=1&c=1&qlt=95&w=163&h=101",
           name: "Caesar Salad",
           message:
             "Crispy romaine lettuce with Caesar dressing, croutons, and parmesan cheese.",
-          price: "$8.99",
+          price: "8.99",
         },
       ],
     },
@@ -40,14 +46,14 @@ const Menu = ({ user }) => {
           name: "Spaghetti Bolognese",
           message:
             "Traditional Italian pasta with a rich and savory meat sauce.",
-          price: "$14.99",
+          price: "14.99",
         },
         {
           img: "https://up.yimg.com/ib/th?id=OIP.maQpFJiRuDMauaTZ3N7KiQHaEo&pid=Api&rs=1&c=1&qlt=95&w=163&h=101",
           name: "Grilled Salmon",
           message:
             "Grilled salmon served with a side of vegetables and lemon butter sauce.",
-          price: "$18.99",
+          price: "18.99",
         },
       ],
     },
@@ -59,7 +65,7 @@ const Menu = ({ user }) => {
           name: "Chocolate Lava Cake",
           message:
             "Warm chocolate cake with a molten center, served with vanilla ice cream.",
-          price: "$6.99",
+          price: "6.99",
         },
       ],
     },
@@ -69,7 +75,40 @@ const Menu = ({ user }) => {
     setCart([...cart, item]);
   };
   const handleTableChange = (event) => {
-    setSelectedTable(event.target.value); // Update selected table
+    setSelectedTable(event.target.value);
+  };
+  const calculateTotal = () => {
+    return cart
+      .reduce((total, item) => total + parseFloat(item.price), 0)
+      .toFixed(2);
+  };
+  const placeOrder = async () => {
+    const orderData = {
+      name: name,
+      table: selectedTable,
+      items: cart,
+      total: calculateTotal(),
+    };
+
+    try {
+      const response = await fetch("http://localhost:4000/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message); 
+        setCart([]);
+      } else {
+        console.log("Failed to place order");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
   };
 
   return (
@@ -149,7 +188,9 @@ const Menu = ({ user }) => {
                           <div className="w-100 d-flex flex-column text-start ps-4">
                             <h5 className="d-flex justify-content-between border-bottom pb-2">
                               <span>{item.name}</span>
-                              <span className="text-primary">{item.price}</span>
+                              <span className="text-primary">
+                                &#8377;{item.price}
+                              </span>
                             </h5>
                             <small className="fst-italic">{item.message}</small>
                           </div>
@@ -194,8 +235,9 @@ const Menu = ({ user }) => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className={`${emtyDnone}`}
               />
-              <div>
+              <div className={`${emtyDnone}`}>
                 <label htmlFor="tableSelect">Select a Table:</label>
                 <select
                   id="tableSelect"
@@ -227,13 +269,19 @@ const Menu = ({ user }) => {
                     ))}
                   </ul>
                 )}
+                {cart.length > 0 && (
+                  <div className="mt-4">
+                    <h5>Total: &#8377;{calculateTotal()}</h5>
+                  </div>
+                )}
               </div>
             </div>
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-warning text-white"
+                className={`btn btn-warning text-white ${emtyDnone}`}
                 data-bs-dismiss="modal"
+                onClick={placeOrder}
               >
                 Order
               </button>
