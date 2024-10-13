@@ -16,10 +16,13 @@ import PrivateRoute from "./Auth/PrivateRoute";
 import Register from "./Auth/Register";
 import Terms from "./Components/Terms/Terms";
 import Privacy from "./Components/Privacy/Privacy";
-import Menu from "./Components/Home/Menu";
 import AdminLogin from "./Auth/AdminLogin";
 import AdminRoute from "./Auth/AdminRoute";
 import AdminPanel from "./Admin/AdminPanel";
+import 'primereact/resources/themes/saga-blue/theme.css'; // Theme
+import 'primereact/resources/primereact.min.css'; // Core CSS
+import 'primeicons/primeicons.css'; 
+import AdMenu from "./Admin/Menu/AdMenu";
 
 const App = () => {
   const about = "About Us";
@@ -89,6 +92,14 @@ const App = () => {
         <Route path="/contact" element={<Contact props={contact} />} />
         <Route path="/terms" element={<Terms props={terms} />} />
         <Route path="/privacy" element={<Privacy props={privacy} />} />
+        <Route 
+          path="/adminmenu" 
+          element={
+            <AdminRoute>
+              <AdMenu />
+            </AdminRoute>
+          } 
+        />
       </Routes>
     </Router>
   );

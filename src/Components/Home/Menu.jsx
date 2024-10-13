@@ -6,6 +6,7 @@ const Menu = ({ user }) => {
   const [table, setTable] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const [emtyDnone, setEmtDnone] = useState("d-none");
   const [selectedTable, setSelectedTable] = useState(null);
+  
   useEffect(() => {
     if (user) {
       setName(user.username);
