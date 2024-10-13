@@ -16,6 +16,7 @@ import PrivateRoute from "./Auth/PrivateRoute";
 import Register from "./Auth/Register";
 import Terms from "./Components/Terms/Terms";
 import Privacy from "./Components/Privacy/Privacy";
+import Menu from "./Components/Home/Menu";
 
 const App = () => {
   const about = "About Us";
@@ -53,7 +54,7 @@ const App = () => {
         <Route path="/home" user={userData}  element={<Home />} />
         <Route path="/about" element={<About props={about} />} />
         <Route path="/services" element={<Services props={services} />} />
-        <Route path="/menu" element={<MenuTab props={foodmenu}/>} />
+        <Route path="/menu" element={<MenuTab props={foodmenu} user={userData}/>} />
         {/* <Route path="/menu" element={
           <PrivateRoute  isAuthenticated={isAuthenticated} >
             <MenuTab props={foodmenu} />

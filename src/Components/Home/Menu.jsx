@@ -1,7 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Menu = () => {
-  const [cart, setCart] = useState([]); // Cart state to store added items
+const Menu = ({ user }) => {
+  const [cart, setCart] = useState([]);
+  const [name, setName] = useState("");
+  const [table, setTable] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [selectedTable, setSelectedTable] = useState(null);
+  useEffect(() => {
+    if (user) {
+      setName(user.username);
+    } else {
+      // setName('')
+    }
+  }, []);
   const foodMenu = [
     {
       category: "Breakfast",
@@ -57,6 +67,9 @@ const Menu = () => {
 
   const addToCart = (item) => {
     setCart([...cart, item]);
+  };
+  const handleTableChange = (event) => {
+    setSelectedTable(event.target.value); // Update selected table
   };
 
   return (
@@ -177,6 +190,31 @@ const Menu = () => {
               ></button>
             </div>
             <div className="modal-body">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <div>
+                <label htmlFor="tableSelect">Select a Table:</label>
+                <select
+                  id="tableSelect"
+                  value={selectedTable}
+                  onChange={handleTableChange}
+                  className="form-select"
+                >
+                  <option value="" disabled>
+                    Select a table
+                  </option>
+                  {table.map((tableNum) => (
+                    <option key={tableNum} value={tableNum}>
+                      Table {tableNum}
+                    </option>
+                  ))}
+                </select>
+
+                {selectedTable && <p>Selected Table: {selectedTable}</p>}
+              </div>
               <div className="mt-5">
                 {cart.length === 0 ? (
                   <p>No items in the cart yet.</p>
@@ -194,10 +232,10 @@ const Menu = () => {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-warning text-white"
                 data-bs-dismiss="modal"
               >
-                Close
+                Order
               </button>
             </div>
           </div>
