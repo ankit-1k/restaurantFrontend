@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 const Menu = ({ user }) => {
   const [cart, setCart] = useState([]);
   const [name, setName] = useState("");
-  const [table, setTable] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  const [emtyDnone,setEmtDnone]=useState('d-none')
+  const [table, setTable] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [emtyDnone, setEmtDnone] = useState("d-none");
   const [selectedTable, setSelectedTable] = useState(null);
   useEffect(() => {
     if (user) {
@@ -12,10 +12,10 @@ const Menu = ({ user }) => {
     } else {
       // setName('')
     }
-    if(cart.length===0){
-      setEmtDnone('d-none')
-    }else{
-      setEmtDnone('d-block')
+    if (cart.length === 0) {
+      setEmtDnone("d-none");
+    } else {
+      setEmtDnone("d-block");
     }
   }, [cart]);
   const foodMenu = [
@@ -74,6 +74,9 @@ const Menu = ({ user }) => {
   const addToCart = (item) => {
     setCart([...cart, item]);
   };
+  const removeFromCart = (indexToRemove) => {
+    setCart(cart.filter((_, index) => index !== indexToRemove));
+  };
   const handleTableChange = (event) => {
     setSelectedTable(event.target.value);
   };
@@ -101,7 +104,7 @@ const Menu = ({ user }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message); 
+        console.log(data.message);
         setCart([]);
       } else {
         console.log("Failed to place order");
@@ -195,12 +198,14 @@ const Menu = ({ user }) => {
                             <small className="fst-italic">{item.message}</small>
                           </div>
                         </div>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => addToCart(item)}
-                        >
-                          Add
-                        </button>
+                        <div className="d-flex justify-content-end">
+                          <button
+                            className="btn btn-warning"
+                            onClick={() => addToCart(item)}
+                          >
+                            Add
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -209,16 +214,19 @@ const Menu = ({ user }) => {
             </div>
             <button
               type="button"
-              className={`btn btn-outline-warning position-absolute end-0 top-0 mt-2`}
+              className={`btn btn-outline-warning position-absolute end-0 top-0 position-relative res-mt--`}
               data-bs-toggle="modal"
-              data-bs-target="#seatModal"
+              data-bs-target="#bookingModal"
             >
               <i className="bi bi-cart"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {cart.length}
+              </span>
             </button>
           </div>
         </div>
       </div>
-      <div className="modal fade" id="seatModal" tabIndex="-1">
+      <div className="modal fade" id="bookingModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -264,7 +272,13 @@ const Menu = ({ user }) => {
                   <ul>
                     {cart.map((cartItem, cartIndex) => (
                       <li key={cartIndex}>
-                        {cartItem.name} - {cartItem.price}
+                        {cartItem.name} - {cartItem.price}{" "}
+                        <button
+                          className="btn btn-sm btn-danger ms-2"
+                          onClick={() => removeFromCart(cartIndex)}
+                        >
+                          Remove
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -272,11 +286,14 @@ const Menu = ({ user }) => {
                 {cart.length > 0 && (
                   <div className="mt-4">
                     <h5>Total: &#8377;{calculateTotal()}</h5>
+                    <button className="btn btn-primary" onClick={placeOrder}>
+                      Place Order
+                    </button>
                   </div>
                 )}
               </div>
             </div>
-            <div className="modal-footer">
+            {/* <div className="modal-footer">
               <button
                 type="button"
                 className={`btn btn-warning text-white ${emtyDnone}`}
@@ -285,7 +302,7 @@ const Menu = ({ user }) => {
               >
                 Order
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

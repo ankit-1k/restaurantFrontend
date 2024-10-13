@@ -481,3 +481,9 @@ a {
 .light-bg{
     background-color: #FFFFFF;
   }
+  @media (max-width:767px) {
+    .res-mt--{
+      margin-top: -50px !important;
+      margin-right: -30px;
+    }
+  } 

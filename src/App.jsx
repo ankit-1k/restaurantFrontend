@@ -17,6 +17,9 @@ import Register from "./Auth/Register";
 import Terms from "./Components/Terms/Terms";
 import Privacy from "./Components/Privacy/Privacy";
 import Menu from "./Components/Home/Menu";
+import AdminLogin from "./Auth/AdminLogin";
+import AdminRoute from "./Auth/AdminRoute";
+import AdminPanel from "./Admin/AdminPanel";
 
 const App = () => {
   const about = "About Us";
@@ -43,6 +46,15 @@ const App = () => {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/" element={<Login onLogin={handleLogin} />} />{" "}
         <Route path="/register" element={<Register />} />
+        <Route path="/adminlogin" element={<AdminLogin />} />
+        <Route 
+          path="/admin" 
+          element={
+            <AdminRoute>
+              <AdminPanel />
+            </AdminRoute>
+          } 
+        />
         {/* <Route
           path="/home"
           element={

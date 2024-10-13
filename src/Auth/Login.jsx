@@ -46,6 +46,7 @@ const Login = ({ onLogin }) => {
         {error && <p>{error}</p>}
         <button type="submit">Login</button>
       </form>
+      <p onClick={()=>navigate('/adminlogin')}>admin</p>
     </div>
   );
 };
