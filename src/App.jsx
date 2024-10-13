@@ -42,26 +42,32 @@ const App = () => {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/" element={<Login onLogin={handleLogin} />} />{" "}
         <Route path="/register" element={<Register />} />
-        <Route
+        {/* <Route
           path="/home"
           element={
             <PrivateRoute isAuthenticated={isAuthenticated}>
               <Home user={userData} />
             </PrivateRoute>
           }
-        />
+        /> */}
+        <Route path="/home" user={userData}  element={<Home />} />
         <Route path="/about" element={<About props={about} />} />
         <Route path="/services" element={<Services props={services} />} />
-        <Route path="/menu" element={<MenuTab props={foodmenu} />} />
-        {/* <Route path="/booking" element={<Booking props={booking} user={userData} />} /> */}
-        <Route
+        <Route path="/menu" element={<MenuTab props={foodmenu}/>} />
+        {/* <Route path="/menu" element={
+          <PrivateRoute  isAuthenticated={isAuthenticated} >
+            <MenuTab props={foodmenu} />
+          </PrivateRoute>
+        } /> */}
+        {/* <Route
           path="/booking"
           element={
             <PrivateRoute isAuthenticated={isAuthenticated}>
               <Booking props={booking} user={userData} />
             </PrivateRoute>
           }
-        />
+        /> */}
+        <Route path="/booking" element={<Booking props={booking} user={userData}  />} />
         <Route path="/team" element={<Ourteam props={ourteam} />} />
         <Route
           path="/testimonial"

@@ -4,6 +4,7 @@ import axios from "axios";
 const Reservation = ({ user }) => {
   const [tblArr, setTblArr] = useState([]);
   const [bookedTables, setBookedTables] = useState([]);
+  const [display,setDisplay]=useState('d-none')
   const [formData, setFormData] = useState({
     name: user?.username || "",
     email: user?.email || "",
@@ -63,7 +64,13 @@ const Reservation = ({ user }) => {
       );
     }
   };
-
+  useEffect(()=>{
+    if(formData.datetime === ''){
+      setDisplay('d-none')
+    }else{
+      setDisplay('')
+    }
+  })
   return (
     <div>
       {/* Reservation Form */}
@@ -186,9 +193,9 @@ const Reservation = ({ user }) => {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-secondary mt-2"
+                      className={`btn btn-outline-secondary mt-2 ${display}`}
                       data-bs-toggle="modal"
-                      data-bs-target="#seatModal"
+                      data-bs-target="#seatModal" 
                     >
                       View Tables
                     </button>

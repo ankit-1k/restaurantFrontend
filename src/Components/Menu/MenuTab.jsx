@@ -3,12 +3,12 @@ import Navbar from '../Navbar/Navbar'
 import CBanner from '../Common/CBanner'
 import Menu from '../Home/Menu'
 import Footer from '../Footer'
-const MenuTab = ({props}) => {
+const MenuTab = ({props,user}) => {
     return (
         <div>
             <Navbar />
             <CBanner props={props}/>
-            <Menu />
+            <Menu user={user}/>
             <Footer/>
         </div>
     )
