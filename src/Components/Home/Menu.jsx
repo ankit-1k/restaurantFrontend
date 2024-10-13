@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Menu = ({ user }) => {
   const [cart, setCart] = useState([]);
@@ -6,86 +7,52 @@ const Menu = ({ user }) => {
   const [table, setTable] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const [emtyDnone, setEmtDnone] = useState("d-none");
   const [selectedTable, setSelectedTable] = useState(null);
-  
+  const [menuItems, setMenuItems] = useState([]); // New state for menu items
+  const [loading, setLoading] = useState(true); // New state for loading
+
   useEffect(() => {
     if (user) {
       setName(user.username);
-    } else {
-      // setName('')
     }
-    if (cart.length === 0) {
-      setEmtDnone("d-none");
-    } else {
-      setEmtDnone("d-block");
-    }
-  }, [cart]);
-  const foodMenu = [
-    {
-      category: "Breakfast",
-      items: [
-        {
-          img: "https://up.yimg.com/ib/th?id=OIP.maQpFJiRuDMauaTZ3N7KiQHaEo&pid=Api&rs=1&c=1&qlt=95&w=163&h=101",
-          name: "Margherita Pizza",
-          message:
-            "A delicious classic pizza with fresh mozzarella, basil, and tomato sauce.",
-          price: "12.99",
-        },
-        {
-          img: "https://up.yimg.com/ib/th?id=OIP.maQpFJiRuDMauaTZ3N7KiQHaEo&pid=Api&rs=1&c=1&qlt=95&w=163&h=101",
-          name: "Caesar Salad",
-          message:
-            "Crispy romaine lettuce with Caesar dressing, croutons, and parmesan cheese.",
-          price: "8.99",
-        },
-      ],
-    },
-    {
-      category: "Lunch",
-      items: [
-        {
-          img: "https://up.yimg.com/ib/th?id=OIP.maQpFJiRuDMauaTZ3N7KiQHaEo&pid=Api&rs=1&c=1&qlt=95&w=163&h=101",
-          name: "Spaghetti Bolognese",
-          message:
-            "Traditional Italian pasta with a rich and savory meat sauce.",
-          price: "14.99",
-        },
-        {
-          img: "https://up.yimg.com/ib/th?id=OIP.maQpFJiRuDMauaTZ3N7KiQHaEo&pid=Api&rs=1&c=1&qlt=95&w=163&h=101",
-          name: "Grilled Salmon",
-          message:
-            "Grilled salmon served with a side of vegetables and lemon butter sauce.",
-          price: "18.99",
-        },
-      ],
-    },
-    {
-      category: "Dinner",
-      items: [
-        {
-          img: "https://up.yimg.com/ib/th?id=OIP.maQpFJiRuDMauaTZ3N7KiQHaEo&pid=Api&rs=1&c=1&qlt=95&w=163&h=101",
-          name: "Chocolate Lava Cake",
-          message:
-            "Warm chocolate cake with a molten center, served with vanilla ice cream.",
-          price: "6.99",
-        },
-      ],
-    },
-  ];
+
+    // Update empty cart display
+    setEmtDnone(cart.length === 0 ? "d-none" : "d-block");
+  }, [cart, user]);
+
+  useEffect(() => {
+    // Fetch menu items
+    const fetchMenuItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/getmenu");
+        setMenuItems(response.data); // Assuming the response data is an array of menu items
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching menu items:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
 
   const addToCart = (item) => {
     setCart([...cart, item]);
   };
+
   const removeFromCart = (indexToRemove) => {
     setCart(cart.filter((_, index) => index !== indexToRemove));
   };
+
   const handleTableChange = (event) => {
     setSelectedTable(event.target.value);
   };
+
   const calculateTotal = () => {
     return cart
       .reduce((total, item) => total + parseFloat(item.price), 0)
       .toFixed(2);
   };
+
   const placeOrder = async () => {
     const orderData = {
       name: name,
@@ -95,18 +62,10 @@ const Menu = ({ user }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data.message);
-        setCart([]);
+      const response = await axios.post("http://localhost:4000/api/order", orderData);
+      if (response.status === 200) {
+        console.log(response.data.message);
+        setCart([]); // Clear cart after placing order
       } else {
         console.log("Failed to place order");
       }
@@ -171,47 +130,51 @@ const Menu = ({ user }) => {
               </li>
             </ul>
             <div className="tab-content">
-              {foodMenu.map((category, index) => (
-                <div
-                  id={`tab-${index + 1}`}
-                  className={`tab-pane fade show p-0 ${
-                    index === 0 ? "active" : ""
-                  }`}
-                  key={index}
-                >
-                  <div className="row g-4">
-                    {category.items.map((item, itemIndex) => (
-                      <div className="col-lg-6" key={itemIndex}>
-                        <div className="d-flex align-items-center">
-                          <img
-                            className="flex-shrink-0 img-fluid rounded"
-                            src={item.img}
-                            alt={item.name}
-                            style={{ width: "80px" }}
-                          />
-                          <div className="w-100 d-flex flex-column text-start ps-4">
-                            <h5 className="d-flex justify-content-between border-bottom pb-2">
-                              <span>{item.name}</span>
-                              <span className="text-primary">
-                                &#8377;{item.price}
-                              </span>
-                            </h5>
-                            <small className="fst-italic">{item.message}</small>
+              {loading ? ( // Show loading state while fetching
+                <p>Loading menu items...</p>
+              ) : (
+                menuItems.map((category, index) => (
+                  <div
+                    id={`tab-${index + 1}`}
+                    className={`tab-pane fade show p-0 ${
+                      index === 0 ? "active" : ""
+                    }`}
+                    key={index}
+                  >
+                    <div className="row g-4">
+                      {category.items.map((item, itemIndex) => (
+                        <div className="col-lg-6" key={itemIndex}>
+                          <div className="d-flex align-items-center">
+                            <img
+                              className="flex-shrink-0 img-fluid rounded"
+                              src={item.img}
+                              alt={item.name}
+                              style={{ width: "80px" }}
+                            />
+                            <div className="w-100 d-flex flex-column text-start ps-4">
+                              <h5 className="d-flex justify-content-between border-bottom pb-2">
+                                <span>{item.name}</span>
+                                <span className="text-primary">
+                                  &#8377;{item.price}
+                                </span>
+                              </h5>
+                              <small className="fst-italic">{item.message}</small>
+                            </div>
+                          </div>
+                          <div className="d-flex justify-content-end">
+                            <button
+                              className="btn btn-warning"
+                              onClick={() => addToCart(item)}
+                            >
+                              Add
+                            </button>
                           </div>
                         </div>
-                        <div className="d-flex justify-content-end">
-                          <button
-                            className="btn btn-warning"
-                            onClick={() => addToCart(item)}
-                          >
-                            Add
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
             <button
               type="button"
@@ -220,7 +183,7 @@ const Menu = ({ user }) => {
               data-bs-target="#bookingModal"
             >
               <i className="bi bi-cart"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {cart.length}
               </span>
             </button>
@@ -274,36 +237,21 @@ const Menu = ({ user }) => {
                     {cart.map((cartItem, cartIndex) => (
                       <li key={cartIndex}>
                         {cartItem.name} - {cartItem.price}{" "}
-                        <button
-                          className="btn btn-sm btn-danger ms-2"
-                          onClick={() => removeFromCart(cartIndex)}
-                        >
-                          Remove
-                        </button>
+                        <button onClick={() => removeFromCart(cartIndex)}>Remove</button>
                       </li>
                     ))}
                   </ul>
                 )}
                 {cart.length > 0 && (
-                  <div className="mt-4">
+                  <div>
                     <h5>Total: &#8377;{calculateTotal()}</h5>
-                    <button className="btn btn-primary" onClick={placeOrder}>
+                    <button className="btn btn-warning" onClick={placeOrder}>
                       Place Order
                     </button>
                   </div>
                 )}
               </div>
             </div>
-            {/* <div className="modal-footer">
-              <button
-                type="button"
-                className={`btn btn-warning text-white ${emtyDnone}`}
-                data-bs-dismiss="modal"
-                onClick={placeOrder}
-              >
-                Order
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
