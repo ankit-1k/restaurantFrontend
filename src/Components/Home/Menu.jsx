@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
 const Menu = ({ user }) => {
   const [cart, setCart] = useState([]);
@@ -7,46 +6,46 @@ const Menu = ({ user }) => {
   const [table, setTable] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const [emtyDnone, setEmtDnone] = useState("d-none");
   const [selectedTable, setSelectedTable] = useState(null);
-  const [menuItems, setMenuItems] = useState([]); // New state for menu items
-  const [loading, setLoading] = useState(true); // New state for loading
+  const [foodMenu, setFoodMenu] = useState([]); // State for food menu
 
   useEffect(() => {
-    if (user) {
-      setName(user.username);
-    }
-
-    // Update empty cart display
-    setEmtDnone(cart.length === 0 ? "d-none" : "d-block");
-  }, [cart, user]);
-
-  useEffect(() => {
-    // Fetch menu items
-    const fetchMenuItems = async () => {
+    // Fetch the food menu data
+    const fetchFoodMenu = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/getmenu");
-        setMenuItems(response.data); // Assuming the response data is an array of menu items
-        setLoading(false);
+        const response = await fetch("http://localhost:4000/api/getmenu"); // Replace with your API endpoint
+        if (response.ok) {
+          const data = await response.json();
+          setFoodMenu(data); // Set the fetched data to state
+        } else {
+          console.log("Failed to fetch menu data");
+        }
       } catch (error) {
-        console.error("Error fetching menu items:", error);
-        setLoading(false);
+        console.error("Error fetching menu data:", error);
       }
     };
 
-    fetchMenuItems();
-  }, []);
+    fetchFoodMenu(); // Call the fetch function
+
+    // User name handling and cart visibility
+    if (user) {
+      setName(user.username);
+    }
+    if (cart.length === 0) {
+      setEmtDnone("d-none");
+    } else {
+      setEmtDnone("d-block");
+    }
+  }, [cart, user]); // Add user to the dependency array
 
   const addToCart = (item) => {
     setCart([...cart, item]);
   };
-
   const removeFromCart = (indexToRemove) => {
     setCart(cart.filter((_, index) => index !== indexToRemove));
   };
-
   const handleTableChange = (event) => {
     setSelectedTable(event.target.value);
   };
-
   const calculateTotal = () => {
     return cart
       .reduce((total, item) => total + parseFloat(item.price), 0)
@@ -59,22 +58,28 @@ const Menu = ({ user }) => {
       items: cart,
       total: calculateTotal(),
     };
-  
+
     try {
-      const response = await axios.post("http://localhost:4000/api/order", orderData);
-      console.log(response); 
-  
-      
-      if (response.status === 200 || response.status === 201) {
-        console.log(response.data.message); 
-        setCart([]); 
+      const response = await fetch("http://localhost:4000/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message);
+        setCart([]); // Clear the cart after placing the order
       } else {
-        console.log("Failed to place order", response.status); 
+        console.log("Failed to place order");
       }
     } catch (error) {
       console.error("Error placing order:", error);
     }
   };
+
   return (
     <div>
       <div className="container-xxl py-5">
@@ -131,51 +136,47 @@ const Menu = ({ user }) => {
               </li>
             </ul>
             <div className="tab-content">
-              {loading ? ( // Show loading state while fetching
-                <p>Loading menu items...</p>
-              ) : (
-                menuItems.map((category, index) => (
-                  <div
-                    id={`tab-${index + 1}`}
-                    className={`tab-pane fade show p-0 ${
-                      index === 0 ? "active" : ""
-                    }`}
-                    key={index}
-                  >
-                    <div className="row g-4">
-                      {category.items.map((item, itemIndex) => (
-                        <div className="col-lg-6" key={itemIndex}>
-                          <div className="d-flex align-items-center">
-                            <img
-                              className="flex-shrink-0 img-fluid rounded"
-                              src={item.img}
-                              alt={item.name}
-                              style={{ width: "80px" }}
-                            />
-                            <div className="w-100 d-flex flex-column text-start ps-4">
-                              <h5 className="d-flex justify-content-between border-bottom pb-2">
-                                <span>{item.name}</span>
-                                <span className="text-primary">
-                                  &#8377;{item.price}
-                                </span>
-                              </h5>
-                              <small className="fst-italic">{item.message}</small>
-                            </div>
-                          </div>
-                          <div className="d-flex justify-content-end">
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => addToCart(item)}
-                            >
-                              Add
-                            </button>
+              {foodMenu.map((category, index) => (
+                <div
+                  id={`tab-${index + 1}`}
+                  className={`tab-pane fade show p-0 ${
+                    index === 0 ? "active" : ""
+                  }`}
+                  key={index}
+                >
+                  <div className="row g-4">
+                    {category.items.map((item, itemIndex) => (
+                      <div className="col-lg-6" key={itemIndex}>
+                        <div className="d-flex align-items-center">
+                          <img
+                            className="flex-shrink-0 img-fluid rounded"
+                            src={item.img}
+                            alt={item.name}
+                            style={{ width: "80px" }}
+                          />
+                          <div className="w-100 d-flex flex-column text-start ps-4">
+                            <h5 className="d-flex justify-content-between border-bottom pb-2">
+                              <span>{item.name}</span>
+                              <span className="text-primary">
+                                &#8377;{item.price}
+                              </span>
+                            </h5>
+                            <small className="fst-italic">{item.message}</small>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                        <div className="d-flex justify-content-end">
+                          <button
+                            className="btn btn-warning"
+                            onClick={() => addToCart(item)}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))
-              )}
+                </div>
+              ))}
             </div>
             <button
               type="button"
@@ -237,21 +238,38 @@ const Menu = ({ user }) => {
                   <ul>
                     {cart.map((cartItem, cartIndex) => (
                       <li key={cartIndex}>
-                        {cartItem.name} - {cartItem.price}{" "}
-                        <button onClick={() => removeFromCart(cartIndex)}>Remove</button>
+                        {cartItem.name} - &#8377;{cartItem.price}
+                        <button
+                          className="btn btn-danger btn-sm ms-2"
+                          onClick={() => removeFromCart(cartIndex)}
+                        >
+                          Remove
+                        </button>
                       </li>
                     ))}
                   </ul>
                 )}
-                {cart.length > 0 && (
-                  <div>
-                    <h5>Total: &#8377;{calculateTotal()}</h5>
-                    <button className="btn btn-warning" onClick={placeOrder}>
-                      Place Order
-                    </button>
-                  </div>
-                )}
               </div>
+              <div className="mt-3">
+                <strong>Total: &#8377;{calculateTotal()}</strong>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={placeOrder}
+                disabled={cart.length === 0 || !selectedTable}
+              >
+                Place Order
+              </button>
             </div>
           </div>
         </div>

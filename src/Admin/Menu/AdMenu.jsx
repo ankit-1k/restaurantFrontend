@@ -23,9 +23,19 @@ const AdMenu = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if selectedCategory is null or any other field is empty
+    if (!selectedCategory || !imgUrl || !foodName || !message || !price) {
+      toastRef.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "All fields are required!",
+      });
+      return; // Exit the function if validation fails
+    }
+
     // Prepare data in the required format
     const menuItem = {
-      category: selectedCategory.name,
+      category: selectedCategory.name, // Access name only if selectedCategory is not null
       items: [
         {
           img: imgUrl,
@@ -38,11 +48,18 @@ const AdMenu = () => {
 
     try {
       // Send data to the backend using Axios
-      const response = await axios.post("http://localhost:4000/api/postmenu", menuItem);
-      
+      const response = await axios.post(
+        "http://localhost:4000/api/postmenu",
+        menuItem
+      );
+
       // Show success message
       if (response.status === 201) {
-        toastRef.current.show({ severity: 'success', summary: 'Success', detail: 'Menu item added!' });
+        toastRef.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Menu item added!",
+        });
         // Reset form fields
         setSelectedCategory(null);
         setImgUrl("");
@@ -52,7 +69,11 @@ const AdMenu = () => {
       }
     } catch (error) {
       // Show error message
-      toastRef.current.show({ severity: 'error', summary: 'Error', detail: error.response?.data?.message || error.message });
+      toastRef.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.response?.data?.message || error.message,
+      });
     }
   };
 
