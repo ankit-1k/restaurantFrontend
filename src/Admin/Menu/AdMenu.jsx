@@ -16,13 +16,19 @@ const AdMenu = () => {
     { name: "Dinner", code: "D" },
   ];
 
-  const [selectedCategory, setSelectedCategory] = React.useState(null);
-  const [imgUrl, setImgUrl] = React.useState("");
-  const [foodName, setFoodName] = React.useState("");
-  const [message, setMessage] = React.useState("");
-  const [price, setPrice] = React.useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [imgUrl, setImgUrl] = useState("");
+  const [foodName, setFoodName] = useState("");
+  const [message, setMessage] = useState("");
+  const [price, setPrice] = useState("");
   const toastRef = React.useRef(null);
 
+  const [orders, setOrders] = useState([]);
+  const [deletedOrders, setDeletedOrders] = useState([]); // State to store deleted orders
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Function to handle menu item submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,11 +38,11 @@ const AdMenu = () => {
         summary: "Error",
         detail: "All fields are required!",
       });
-      return; 
+      return;
     }
 
     const menuItem = {
-      category: selectedCategory.name, 
+      category: selectedCategory.name,
       items: [
         {
           img: imgUrl,
@@ -73,10 +79,8 @@ const AdMenu = () => {
       });
     }
   };
-  // get
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
+  // Fetch orders on component mount
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -94,6 +98,8 @@ const AdMenu = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  // Template for rendering order items
   const itemTemplate = (rowData) => {
     return (
       <ul>
@@ -105,15 +111,25 @@ const AdMenu = () => {
       </ul>
     );
   };
+
+  // Function to handle order deletion
   const handleDelete = async (orderId) => {
     try {
+      // Find the order to be deleted
+      const orderToDelete = orders.find(order => order._id === orderId);
+      // Store the deleted order in the deletedOrders state
+      setDeletedOrders((prev) => [...prev, orderToDelete]);
+
+      // Delete the order from the backend
       await axios.delete(`http://localhost:4000/api/orders/${orderId}`);
+      // Update the orders state to remove the deleted order
       setOrders(orders.filter((order) => order._id !== orderId));
     } catch (err) {
       setError(err.message);
     }
   };
 
+  // Template for the action buttons in the DataTable
   const actionTemplate = (rowData) => {
     return (
       <Button
@@ -191,7 +207,8 @@ const AdMenu = () => {
             </div>
           </div>
         </TabPanel>
-        <TabPanel header="View Items">
+        
+        <TabPanel header="View Orders">
           <DataTable
             value={orders}
             paginator
@@ -207,6 +224,23 @@ const AdMenu = () => {
               body={(rowData) => `$${rowData.total.toFixed(2)}`}
             />
             <Column header="Actions" body={actionTemplate} />
+          </DataTable>
+        </TabPanel>
+        <TabPanel header="Deleted Orders">
+          <DataTable
+            value={deletedOrders}
+            paginator
+            rows={10}
+            responsiveLayout="scroll"
+          >
+            <Column field="name" header="Name" />
+            <Column field="table" header="Table" />
+            <Column body={itemTemplate} header="Items" />
+            <Column
+              field="total"
+              header="Total"
+              body={(rowData) => `$${rowData.total.toFixed(2)}`}
+            />
           </DataTable>
         </TabPanel>
       </TabView>
