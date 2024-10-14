@@ -28,6 +28,76 @@ const AdMenu = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch orders and deleted orders on component mount
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/orders");
+        setOrders(response.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    const fetchDeletedOrders = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/deleted-orders");
+        setDeletedOrders(response.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchOrders();
+    fetchDeletedOrders(); // Fetch deleted orders here
+    setLoading(false);
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const itemTemplate = (rowData) => {
+    return (
+      <ul>
+        {rowData.items.map((item) => (
+          <li key={item._id}>
+            {item.name} - ${item.price.toFixed(2)}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  const handleDelete = async (orderId) => {
+    try {
+      // Find the order to delete
+      const orderToDelete = orders.find(order => order._id === orderId);
+      if (!orderToDelete) return;
+
+      // Store the deleted order in the deletedOrders state
+      setDeletedOrders((prev) => [...prev, orderToDelete]);
+
+      // Delete the order from the backend
+      await axios.delete(`http://localhost:4000/api/orders/${orderId}`);
+
+      // Update the orders state to remove the deleted order
+      setOrders(orders.filter((order) => order._id !== orderId));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const actionTemplate = (rowData) => {
+    return (
+      <Button
+        label="Delete"
+        icon="pi pi-times"
+        severity="danger"
+        onClick={() => handleDelete(rowData._id)}
+      />
+    );
+  };
+
   // Function to handle menu item submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,67 +148,6 @@ const AdMenu = () => {
         detail: error.response?.data?.message || error.message,
       });
     }
-  };
-
-  // Fetch orders on component mount
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get("http://localhost:4000/api/orders");
-        setOrders(response.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  // Template for rendering order items
-  const itemTemplate = (rowData) => {
-    return (
-      <ul>
-        {rowData.items.map((item) => (
-          <li key={item._id}>
-            {item.name} - ${item.price.toFixed(2)}
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
-  // Function to handle order deletion
-  const handleDelete = async (orderId) => {
-    try {
-      // Find the order to be deleted
-      const orderToDelete = orders.find(order => order._id === orderId);
-      // Store the deleted order in the deletedOrders state
-      setDeletedOrders((prev) => [...prev, orderToDelete]);
-
-      // Delete the order from the backend
-      await axios.delete(`http://localhost:4000/api/orders/${orderId}`);
-      // Update the orders state to remove the deleted order
-      setOrders(orders.filter((order) => order._id !== orderId));
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  // Template for the action buttons in the DataTable
-  const actionTemplate = (rowData) => {
-    return (
-      <Button
-        label="Delete"
-        icon="pi pi-times"
-        severity="danger"
-        onClick={() => handleDelete(rowData._id)}
-      />
-    );
   };
 
   return (
@@ -207,7 +216,7 @@ const AdMenu = () => {
             </div>
           </div>
         </TabPanel>
-        
+
         <TabPanel header="View Orders">
           <DataTable
             value={orders}
@@ -226,6 +235,7 @@ const AdMenu = () => {
             <Column header="Actions" body={actionTemplate} />
           </DataTable>
         </TabPanel>
+        
         <TabPanel header="Deleted Orders">
           <DataTable
             value={deletedOrders}
