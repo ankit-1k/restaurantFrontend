@@ -27,7 +27,21 @@ const AdMenu = () => {
   const [deletedOrders, setDeletedOrders] = useState([]); // State to store deleted orders
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [menuItems, setMenuItems] = useState([]);
+  // items menu
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/getmenu");
+        setMenuItems(response.data);
+      } catch (error) {
+        console.error("Error fetching menu items:", error);
+      }
+    };
 
+    fetchMenu();
+  }, []);
+  console.log(menuItems)
   // Fetch orders and deleted orders on component mount
   useEffect(() => {
     const fetchOrders = async () => {
@@ -41,7 +55,9 @@ const AdMenu = () => {
 
     const fetchDeletedOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/deleted-orders");
+        const response = await axios.get(
+          "http://localhost:4000/api/deleted-orders"
+        );
         setDeletedOrders(response.data);
       } catch (err) {
         setError(err.message);
@@ -71,7 +87,7 @@ const AdMenu = () => {
   const handleDelete = async (orderId) => {
     try {
       // Find the order to delete
-      const orderToDelete = orders.find(order => order._id === orderId);
+      const orderToDelete = orders.find((order) => order._id === orderId);
       if (!orderToDelete) return;
 
       // Store the deleted order in the deletedOrders state
@@ -149,7 +165,7 @@ const AdMenu = () => {
       });
     }
   };
-
+  
   return (
     <>
       <AdHeader />
@@ -217,6 +233,8 @@ const AdMenu = () => {
           </div>
         </TabPanel>
 
+        <TabPanel header="View Menu"></TabPanel>
+
         <TabPanel header="View Orders">
           <DataTable
             value={orders}
@@ -235,7 +253,7 @@ const AdMenu = () => {
             <Column header="Actions" body={actionTemplate} />
           </DataTable>
         </TabPanel>
-        
+
         <TabPanel header="Deleted Orders">
           <DataTable
             value={deletedOrders}
