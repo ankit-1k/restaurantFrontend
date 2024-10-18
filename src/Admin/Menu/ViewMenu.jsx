@@ -11,7 +11,7 @@ import "primereact/resources/primereact.min.css"; // PrimeReact CSS
 import "primeicons/primeicons.css";
 const ViewMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null); // Selected category
+  const [selectedCategory, setSelectedCategory] = useState('Breakfast'); // Selected category
   const [editDialog, setEditDialog] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [formData, setFormData] = useState({
@@ -53,7 +53,7 @@ const ViewMenu = () => {
             : menuItem
         )
       );
-      fetchMenu()
+      fetchMenu();
       console.log("Menu item deleted successfully!");
     } catch (error) {
       console.error("Error deleting menu item:", error);
@@ -89,8 +89,8 @@ const ViewMenu = () => {
             : menuItem
         )
       );
-      setEditDialog(false); 
-      fetchMenu()
+      setEditDialog(false);
+      fetchMenu();
     } catch (error) {
       console.error("Error updating menu item:", error);
     }
@@ -109,16 +109,19 @@ const ViewMenu = () => {
   }));
   return (
     <>
-      <div className="card">
-        <h2>Menu Items</h2>
+      <div>
+        <h2 className="text-center">Menu Items</h2>
 
         {/* Dropdown for selecting category */}
-        <Dropdown
-          value={selectedCategory}
-          options={categoryOptions}
-          onChange={(e) => setSelectedCategory(e.value)}
-          placeholder="Select a Category"
-        />
+        <div className="d-flex justify-content-end mb-2">
+          <Dropdown
+            value={selectedCategory}
+            options={categoryOptions}
+            onChange={(e) => setSelectedCategory(e.value)}
+            placeholder="Select a Category"
+            style={{ width: "15rem" }}
+          />
+        </div>
 
         <DataTable value={filteredItems} responsiveLayout="scroll">
           <Column field="name" header="Name"></Column>
