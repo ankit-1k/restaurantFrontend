@@ -23,6 +23,7 @@ import 'primereact/resources/themes/saga-blue/theme.css'; // Theme
 import 'primereact/resources/primereact.min.css'; // Core CSS
 import 'primeicons/primeicons.css'; 
 import AdMenu from "./Admin/Menu/AdMenu";
+import AdminTable from "./Admin/Tables/AdminTable";
 
 const App = () => {
   const about = "About Us";
@@ -97,6 +98,14 @@ const App = () => {
           element={
             <AdminRoute>
               <AdMenu />
+            </AdminRoute>
+          } 
+        />
+        <Route 
+          path="/admintable" 
+          element={
+            <AdminRoute>
+              <AdminTable />
             </AdminRoute>
           } 
         />

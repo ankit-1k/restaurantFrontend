@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar/Navbar";
-
+import Footer from './../Components/Footer'
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("a@g.co");
   const [password, setPassword] = useState("a");
@@ -81,6 +81,7 @@ const Login = ({ onLogin }) => {
           </div>
         </div>
       </div>
+      <Footer />
       {/* <form onSubmit={handleSubmit}>
         <input 
           type="email" 

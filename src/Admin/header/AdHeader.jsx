@@ -26,7 +26,7 @@ const AdHeader = () => {
         <ul className="ad-menu">
           <li className="ad-menu-item">Dashboard</li>
           <li className="ad-menu-item" onClick={()=>navigate('/adminmenu')}>Menu</li>
-          <li className="ad-menu-item">Settings</li>
+          <li className="ad-menu-item" onClick={()=>navigate('/admintable')}>Table Book</li>
           <li className="ad-menu-item">Reports</li>
           <button className='ad-button' onClick={handleLogout}>Logout</button> 
         </ul>
