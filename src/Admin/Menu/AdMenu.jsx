@@ -42,7 +42,9 @@ const AdMenu = () => {
 
     const fetchDeletedOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/deleted-orders");
+        const response = await axios.get(
+          "http://localhost:4000/api/deleted-orders"
+        );
         setDeletedOrders(response.data);
       } catch (err) {
         setError(err.message);
@@ -72,7 +74,7 @@ const AdMenu = () => {
   const handleDelete = async (orderId) => {
     try {
       // Find the order to delete
-      const orderToDelete = orders.find(order => order._id === orderId);
+      const orderToDelete = orders.find((order) => order._id === orderId);
       if (!orderToDelete) return;
 
       // Store the deleted order in the deletedOrders state
@@ -158,61 +160,76 @@ const AdMenu = () => {
         <TabPanel header="Add Items">
           <div className="ad-menu-container">
             <div className="container">
-              <h2 className="form-title">Add Menu Item</h2>
+              <h2 className="form-title mt-2">Add Menu Item</h2>
               <Toast ref={toastRef} />
-              <form className="ad-menu-form" onSubmit={handleSubmit}>
-                <label htmlFor="category">Category</label>
-                <Dropdown
-                  id="category"
-                  value={selectedCategory}
-                  options={categories}
-                  onChange={(e) => setSelectedCategory(e.value)}
-                  optionLabel="name"
-                  placeholder="Select a category"
-                  className="mb-3"
-                />
-
-                <label htmlFor="img">Image URL</label>
-                <InputText
-                  id="img"
-                  value={imgUrl}
-                  onChange={(e) => setImgUrl(e.target.value)}
-                  placeholder="Enter image URL"
-                  className="mb-3"
-                />
-
-                <label htmlFor="foodName">Food Name</label>
-                <InputText
-                  id="foodName"
-                  value={foodName}
-                  onChange={(e) => setFoodName(e.target.value)}
-                  placeholder="Enter food name"
-                  className="mb-3"
-                />
-
-                <label htmlFor="msg">Message</label>
-                <InputText
-                  id="msg"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Enter a message"
-                  className="mb-3"
-                />
-
-                <label htmlFor="price">Price</label>
-                <InputText
-                  id="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  placeholder="Enter price"
-                  className="mb-3"
-                />
-
-                <Button
-                  type="submit"
-                  label="Add Item"
-                  className="p-button-warning"
-                />
+              <form className="ad-menu-form mt-3" onSubmit={handleSubmit}>
+                <div className="row">
+                  <div className="col-md-4">
+                    <label htmlFor="category">Category</label> <br />
+                    <Dropdown
+                      id="category"
+                      value={selectedCategory}
+                      options={categories}
+                      onChange={(e) => setSelectedCategory(e.value)}
+                      optionLabel="name"
+                      placeholder="Select a category"
+                      className="mt-2 w-100"
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <label htmlFor="img">Image URL</label>
+                    <InputText
+                      id="img"
+                      value={imgUrl}
+                      onChange={(e) => setImgUrl(e.target.value)}
+                      placeholder="Enter image URL"
+                      className="mt-2 d-block w-100"
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <label htmlFor="foodName">Food Name</label>
+                    <InputText
+                      id="foodName"
+                      value={foodName}
+                      onChange={(e) => setFoodName(e.target.value)}
+                      placeholder="Enter food name"
+                      className="mt-2 d-block w-100"
+                    />
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col-md-4">
+                    <label htmlFor="msg">Message</label>
+                    <InputText
+                      id="msg"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Enter a message"
+                      className="mt-2 d-block w-100"
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <label htmlFor="price">Price</label>
+                    <InputText
+                      id="price"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      placeholder="Enter price"
+                      className="mt-2 d-block w-100"
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                  <div className="d-flex justify-content-end">
+                    <Button
+                      type="submit"
+                      label="Add Item"
+                      className="p-button-warning mt-5"
+                    />
+                </div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -240,7 +257,7 @@ const AdMenu = () => {
             <Column header="Actions" body={actionTemplate} />
           </DataTable>
         </TabPanel>
-        
+
         <TabPanel header="Deleted Orders">
           <DataTable
             value={deletedOrders}
