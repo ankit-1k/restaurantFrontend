@@ -87,9 +87,11 @@ const AdminTable = () => {
                             <Column field="name" header="Name" />
                             <Column field="email" header="Email" />
                             <Column field="datetime" header="Date & Time" />
+                            <Column field="endTime" header="End Time" />
+                            <Column field="duration" header="Duration" />
                             <Column field="phone" header="Phone" />
                             <Column field="table" header="Table" />
-                            <Column field="people" header="People" />
+                            {/* <Column field="people" header="People" /> */}
                             {/* <Column field="specialRequest" header="Special Request" /> */}
                             <Column body={actionTemplate} header="Actions" />
                         </DataTable>
@@ -107,24 +109,25 @@ const AdminTable = () => {
                                 <label htmlFor="phone">Phone</label>
                                 <InputText id="phone" value={selectedReservation?.phone} onChange={(e) => onInputChange(e, 'phone')} />
                             </div>
-                            <div className="field">
+                            {/* <div className="field">
                                 <label htmlFor="people">People</label>
                                 <InputText id="people" value={selectedReservation?.people} onChange={(e) => onInputChange(e, 'people')} />
-                            </div>
+                            </div> */}
                             <Button label="Save" icon="pi pi-check" onClick={updateReservation} />
                         </Dialog>
                     </div>
                 </TabPanel>
 
-                <TabPanel header="Deleted Orders">
+                <TabPanel header="Deleted Tables">
                     <div>
                         <DataTable value={deletedReservations} paginator rows={10} responsiveLayout="scroll">
                             <Column field="name" header="Name" />
                             <Column field="email" header="Email" />
                             <Column field="datetime" header="Date & Time" />
+                            <Column field="duration" header="Duration" />
                             <Column field="phone" header="Phone" />
                             <Column field="table" header="Table" />
-                            <Column field="people" header="People" />
+                            {/* <Column field="people" header="People" /> */}
                         </DataTable>
                     </div>
                 </TabPanel>

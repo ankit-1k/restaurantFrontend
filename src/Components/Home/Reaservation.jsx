@@ -12,7 +12,7 @@ const Reservation = ({ user }) => {
     phone: "",
     table: [],
     people: 1,
-    duration: "1", // Default to 1 hour
+    duration: "1", 
     specialRequest: "",
   });
   useEffect(() => {
@@ -49,6 +49,7 @@ const Reservation = ({ user }) => {
       const reservationData = { ...formData, table: tblArr };
       await axios.post("http://localhost:4000/reservations", reservationData);
       alert("Reservation successful!");
+      console.log(reservationData)
     } catch (error) {
       console.error("Error saving reservation", error);
       alert("Failed to save reservation");

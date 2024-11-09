@@ -24,6 +24,7 @@ import 'primereact/resources/primereact.min.css'; // Core CSS
 import 'primeicons/primeicons.css'; 
 import AdMenu from "./Admin/Menu/AdMenu";
 import AdminTable from "./Admin/Tables/AdminTable";
+import Report from "./Admin/Reports/Report";
 
 const App = () => {
   const about = "About Us";
@@ -106,6 +107,14 @@ const App = () => {
           element={
             <AdminRoute>
               <AdminTable />
+            </AdminRoute>
+          } 
+        />
+        <Route 
+          path="/reports" 
+          element={
+            <AdminRoute>
+              <Report />
             </AdminRoute>
           } 
         />
