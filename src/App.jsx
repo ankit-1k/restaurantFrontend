@@ -25,6 +25,7 @@ import 'primeicons/primeicons.css';
 import AdMenu from "./Admin/Menu/AdMenu";
 import AdminTable from "./Admin/Tables/AdminTable";
 import Report from "./Admin/Reports/Report";
+import MenuReports from "./Admin/MenuReports/MenuReports";
 
 const App = () => {
   const about = "About Us";
@@ -115,6 +116,14 @@ const App = () => {
           element={
             <AdminRoute>
               <Report />
+            </AdminRoute>
+          } 
+        />
+        <Route 
+          path="/weekreports" 
+          element={
+            <AdminRoute>
+              <MenuReports />
             </AdminRoute>
           } 
         />
