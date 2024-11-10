@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
 import axios from "axios";
 import moment from "moment";
+import { Dialog } from "primereact/dialog";
 
 const YearlyReport = () => {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     fetchReservationData();
@@ -13,7 +15,9 @@ const YearlyReport = () => {
 
   const fetchReservationData = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/deleted-reservations"); // Adjust URL as needed
+      const response = await axios.get(
+        "http://localhost:4000/deleted-reservations"
+      ); // Adjust URL as needed
       const reservations = response.data;
       const yearlyData = getYearlyData(reservations);
       setupChartData(yearlyData);
@@ -67,9 +71,30 @@ const YearlyReport = () => {
   };
 
   return (
-    <div className="card">
-      <Chart type="bar" data={chartData} options={chartOptions} />
-    </div>
+    <>
+      <p
+        className="mt-3 lead fw-bold pointer info-text m-0 "
+        onClick={() => setVisible(true)}
+      >
+        Yearly Weekly Reports <i className="pi pi-info-circle text-info"></i>
+      </p>
+      <div className="card">
+        <Chart type="bar" data={chartData} options={chartOptions} />
+      </div>
+      <Dialog
+        header="Sales Yearly Reports"
+        visible={visible}
+        maximizable
+        style={{ width: "50vw" }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}>
+        <div>
+          
+        </div>
+      </Dialog>
+    </>
   );
 };
 

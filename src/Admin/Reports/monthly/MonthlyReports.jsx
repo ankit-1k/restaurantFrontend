@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Chart } from "primereact/chart";
 import axios from "axios";
 import moment from "moment";
+import { Dialog } from "primereact/dialog";
 
 const MonthlyReports = () => {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
   const [reservations, setReservations] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     fetchReservations();
@@ -75,9 +77,27 @@ const MonthlyReports = () => {
 
   return (
     <>
+      <p
+        className="mt-3 lead fw-bold pointer info-text m-0 "
+        onClick={() => setVisible(true)}
+      >
+        Sales Monthly Reports <i className="pi pi-info-circle text-info"></i>
+      </p>
+
       <div className="card">
         <Chart type="bar" data={chartData} options={chartOptions} />
       </div>
+
+      <Dialog
+        header="Sales Monthly Reports"
+        visible={visible}
+        maximizable
+        style={{ width: "50vw" }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+      ></Dialog>
     </>
   );
 };

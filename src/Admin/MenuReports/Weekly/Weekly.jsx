@@ -9,7 +9,7 @@ const WeeklySalesReport = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(); 
   }, []);
 
   const fetchOrders = async () => {

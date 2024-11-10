@@ -462,6 +462,12 @@
   padding-right: 15px;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
+.pointer{
+  cursor: pointer;
+}
+.info-text :hover{
+  color: rgb(5, 56, 71);
+}
 @media (max-width: 500px) {
   .footer .footer-menu a {
     margin-right: 5px;
