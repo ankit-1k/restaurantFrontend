@@ -48,7 +48,7 @@ const AdHeader = () => {
             Reports
           </li>
           <li className="ad-menu-item" onClick={() => navigate("/weekreports")}>Menu Reports</li>
-          <button className="ad-button" onClick={handleLogout}>
+          <button className="ad-button mt-2" onClick={handleLogout}>
             Logout
           </button>
         </ul>

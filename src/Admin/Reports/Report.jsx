@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Dialog } from "primereact/dialog";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";import { Dialog } from "primereact/dialog";
 import "./report.css";
 import AdHeader from "../header/AdHeader";
 import MonthlyReports from "./monthly/MonthlyReports";
@@ -9,6 +11,74 @@ import reportImg from "./../../assets/img/reports.gif";
 
 const Report = () => {
   const [visible, setVisible] = useState(false);
+  const [yearlyData, setYearlyData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch deleted reservations data from API
+        const response = await axios.get("http://localhost:4000/deleted-reservations");
+        
+        // Group data by year and calculate yearly stats
+        const dataByYear = response.data.reduce((acc, reservation) => {
+          const year = new Date(reservation.datetime).getFullYear();
+          if (!acc[year]) {
+            acc[year] = {
+              year,
+              totalSales: 0,
+              totalTables: new Set(),
+              highestTablesBooking: null,
+              longestBooking: null,
+            };
+          }
+
+          // Ensure reservation.total is a number; default to 0 if undefined
+          const reservationTotal = reservation.total ? parseFloat(reservation.total) : 0;
+
+          // Update total sales for the year
+          acc[year].totalSales += reservationTotal;
+
+          // Collect unique tables booked for the year
+          reservation.table.forEach((table) => acc[year].totalTables.add(table));
+
+          // Track reservation with the highest number of tables booked
+          if (
+            !acc[year].highestTablesBooking ||
+            reservation.table.length > acc[year].highestTablesBooking.table.length
+          ) {
+            acc[year].highestTablesBooking = reservation;
+          }
+
+          // Track reservation with the longest duration
+          const currentDuration = new Date(reservation.endTime) - new Date(reservation.datetime);
+          const longestDuration = acc[year].longestBooking
+            ? new Date(acc[year].longestBooking.endTime) -
+              new Date(acc[year].longestBooking.datetime)
+            : 0;
+          if (!acc[year].longestBooking || currentDuration > longestDuration) {
+            acc[year].longestBooking = reservation;
+          }
+
+          return acc;
+        }, {});
+
+        // Prepare the formatted data for the DataTable
+        const formattedData = Object.values(dataByYear).map((yearData) => ({
+          year: yearData.year,
+          totalSales: yearData.totalSales,
+          totalTables: yearData.totalTables.size,
+          highestTablesBooking: yearData.highestTablesBooking?.name || "-",
+          longestBooking: yearData.longestBooking?.name || "-",
+        }));
+
+        setYearlyData(formattedData);
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -42,7 +112,7 @@ const Report = () => {
         </div>
       </div>
       <Dialog
-        header="Header"
+        header="Top Customer"
         visible={visible}
         maximizable
         style={{ width: "50vw" }}
@@ -50,7 +120,15 @@ const Report = () => {
           if (!visible) return;
           setVisible(false);
         }}
-      ></Dialog>
+      >
+      <DataTable value={yearlyData} className="p-datatable-striped">
+        <Column field="year" header="Year" />
+        {/* <Column field="totalSales" header="Total Sales Price" /> */}
+        <Column field="totalTables" header="Total Tables Booked" />
+        <Column field="highestTablesBooking" header="Most Tables Booked By" />
+        <Column field="longestBooking" header="Longest Booking By" />
+      </DataTable>
+      </Dialog>
     </>
   );
 };
