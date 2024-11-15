@@ -26,6 +26,7 @@ import AdMenu from "./Admin/Menu/AdMenu";
 import AdminTable from "./Admin/Tables/AdminTable";
 import Report from "./Admin/Reports/Report";
 import MenuReports from "./Admin/MenuReports/MenuReports";
+import AdminContact from "./Admin/AdminContact/AdminContact";
 
 const App = () => {
   const about = "About Us";
@@ -53,39 +54,10 @@ const App = () => {
         <Route path="/" element={<Login onLogin={handleLogin} />} />{" "}
         <Route path="/register" element={<Register />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
-        <Route 
-          path="/admin" 
-          element={
-            <AdminRoute>
-              <AdminPanel />
-            </AdminRoute>
-          } 
-        />
-        {/* <Route
-          path="/home"
-          element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
-              <Home user={userData} />
-            </PrivateRoute>
-          }
-        /> */}
         <Route path="/home" user={userData}  element={<Home />} />
         <Route path="/about" element={<About props={about} />} />
         <Route path="/services" element={<Services props={services} />} />
         <Route path="/menu" element={<MenuTab props={foodmenu} user={userData}/>} />
-        {/* <Route path="/menu" element={
-          <PrivateRoute  isAuthenticated={isAuthenticated} >
-            <MenuTab props={foodmenu} />
-          </PrivateRoute>
-        } /> */}
-        {/* <Route
-          path="/booking"
-          element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
-              <Booking props={booking} user={userData} />
-            </PrivateRoute>
-          }
-        /> */}
         <Route path="/booking" element={<Booking props={booking} user={userData}  />} />
         <Route path="/team" element={<Ourteam props={ourteam} />} />
         <Route
@@ -95,6 +67,15 @@ const App = () => {
         <Route path="/contact" element={<Contact props={contact} />} />
         <Route path="/terms" element={<Terms props={terms} />} />
         <Route path="/privacy" element={<Privacy props={privacy} />} />
+        {/* Admin */}
+        <Route 
+          path="/admin" 
+          element={
+            <AdminRoute>
+              <AdminPanel />
+            </AdminRoute>
+          } 
+        />
         <Route 
           path="/adminmenu" 
           element={
@@ -124,6 +105,14 @@ const App = () => {
           element={
             <AdminRoute>
               <MenuReports />
+            </AdminRoute>
+          } 
+        />
+        <Route 
+          path="/admincontact" 
+          element={
+            <AdminRoute>
+              <AdminContact />
             </AdminRoute>
           } 
         />

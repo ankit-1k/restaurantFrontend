@@ -30,7 +30,9 @@
     padding: 0;
     margin: 0;
 }
-
+.ad-menu li{
+    margin-top: 5px;
+}
 .ad-menu-item {
     padding: 15px 20px;
     cursor: pointer;
@@ -38,11 +40,12 @@
 }
 
 .ad-menu-item:hover {
-    background-color: #FEA116; /* Light hover effect */
+    background-color: #ffffff; /* Light hover effect */
+    color: #FEA116;
 }
 
 .ad-menu-item:active {
-    background-color: #FEA116; /* Active state */
+    background-color: #ffffff; /* Active state */
 }
 
 .ad-button {
@@ -56,5 +59,11 @@
 }
 
 .ad-button:hover {
-    background-color: #e68a00; /* Darker yellow on hover */
+    background-color: #f8ca84; /* Darker yellow on hover */
+}
+
+.ad-menu-item.selected {
+    background-color: #FEA116; /* Same hover color */
+    color: white; /* Text color for selected item */
+    font-weight: bold; /* Optional: highlight the text */
 }

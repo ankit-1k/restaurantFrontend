@@ -92,8 +92,8 @@ const MenuReports = () => {
     <div>
       <AdHeader />
       <div className="container">
-        <p className="mt-3 lead fw-bold text-end">
-          Food Sales Report Info <i className="pi pi-info-circle" onClick={()=>setVisible(true)}></i>
+        <p className="mt-3 lead fw-bold text-end pointer" onClick={()=>setVisible(true)}>
+          Food Sales Report Info <i className="pi pi-info-circle"></i>
         </p>
         <div className="row mt-">
           <div className="col-md-6">
