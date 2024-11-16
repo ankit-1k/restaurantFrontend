@@ -7,14 +7,14 @@ import AdHeader from "../header/AdHeader";
 
 const AdminContact = () => {
   const [contacts, setContacts] = useState([]);
-  const baseURL = window.location.hostname === "localhost" 
-  ? "http://localhost:4000/api" 
-  : "https://restaurantbackend-1b3r0ac66-ankits-projects-1030ff5d.vercel.app/api";
+  // const baseURL = window.location.hostname === "localhost" 
+  // ? "http://localhost:4000/api" 
+  // : "https://restaurantbackend-1b3r0ac66-ankits-projects-1030ff5d.vercel.app/api";
   useEffect(() => {
     const fetchContacts = async () => {
       try {
         const response = await axios.get(
-          `${baseURL}/getcontact`
+          `https://restaurantbackend-1b3r0ac66-ankits-projects-1030ff5d.vercel.app/api/getcontact`
         );
         setContacts(response.data);
         console.log(response.data);
