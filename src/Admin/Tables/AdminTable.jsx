@@ -141,7 +141,7 @@ const AdminTable = () => {
               onHide={() => setEditDialogVisible(false)}
             >
               <div className="field">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name" className="d-block mt-2">Name</label>
                 <InputText
                   id="name"
                   value={selectedReservation?.name}
@@ -149,7 +149,7 @@ const AdminTable = () => {
                 />
               </div>
               <div className="field">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className="d-block mt-2">Email</label>
                 <InputText
                   id="email"
                   value={selectedReservation?.email}
@@ -157,7 +157,7 @@ const AdminTable = () => {
                 />
               </div>
               <div className="field">
-                <label htmlFor="phone">Phone</label>
+                <label htmlFor="phone" className="d-block mt-2">Phone</label>
                 <InputText
                   id="phone"
                   value={selectedReservation?.phone}
@@ -171,6 +171,7 @@ const AdminTable = () => {
               <Button
                 label="Save"
                 icon="pi pi-check"
+                className="mt-2"
                 onClick={updateReservation}
               />
             </Dialog>

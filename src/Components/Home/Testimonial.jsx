@@ -1,67 +1,85 @@
-import React from 'react'
-import testmimonial1 from './../../assets/img/testimonial-1.jpg'
-import testmimonial2 from './../../assets/img/testimonial-2.jpg'
-import testmimonial3 from './../../assets/img/testimonial-3.jpg'
-import testmimonial4 from './../../assets/img/testimonial-4.jpg'
-const Testimonial = () => {
-    return (
-        <div>
-            <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="container">
-                    <div class="text-center">
-                        <h5 class="section-title ff-secondary text-center text-primary fw-normal">Testimonial</h5>
-                        <h1 class="mb-5">Our Clients Say!!!</h1>
-                    </div>
-                    <div class="owl-carousel testimonial-carousel">
-                        <div class="testimonial-item bg-transparent border rounded p-4">
-                            <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                            <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                            <div class="d-flex align-items-center">
-                                <img class="img-fluid flex-shrink-0 rounded-circle" src={testmimonial1} alt='' style={{width:'50px',height:'50px'}}/>
-                                    <div class="ps-3">
-                                        <h5 class="mb-1">Client Name</h5>
-                                        <small>Profession</small>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-item bg-transparent border rounded p-4">
-                            <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                            <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                            <div class="d-flex align-items-center">
-                                <img class="img-fluid flex-shrink-0 rounded-circle" src={testmimonial2} alt='' style={{width:'50px',height:'50px'}}/>
-                                    <div class="ps-3">
-                                        <h5 class="mb-1">Client Name</h5>
-                                        <small>Profession</small>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-item bg-transparent border rounded p-4">
-                            <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                            <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                            <div class="d-flex align-items-center">
-                                <img class="img-fluid flex-shrink-0 rounded-circle" src={testmimonial3} alt='' style={{width:'50px',height:'50px'}}/>
-                                    <div class="ps-3">
-                                        <h5 class="mb-1">Client Name</h5>
-                                        <small>Profession</small>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-item bg-transparent border rounded p-4">
-                            <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                            <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                            <div class="d-flex align-items-center">
-                                <img class="img-fluid flex-shrink-0 rounded-circle" src={testmimonial4} alt='' style={{width:'50px',height:'50px'}}/>
-                                    <div class="ps-3">
-                                        <h5 class="mb-1">Client Name</h5>
-                                        <small>Profession</small>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
+import React from "react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import testimonial1 from "./../../assets/img/testimonial-1.jpg";
+import testimonial2 from "./../../assets/img/testimonial-2.jpg";
+import testimonial3 from "./../../assets/img/testimonial-3.jpg";
+import testimonial4 from "./../../assets/img/testimonial-4.jpg";
+import './testimonial.css';
 
-export default Testimonial
+const testimonials = [
+  {
+    image: testimonial1,
+    name: "C-Marvel",
+    review: "Amazing service! Highly recommended for anyone seeking quality food.",
+  },
+  {
+    image: testimonial2,
+    name: "Thor",
+    review: "The food and service are fantastic. Will visit again soon!",
+  },
+  {
+    image: testimonial3,
+    name: "Doom",
+    review: "A delightful experience. The team ensures everything is perfect!",
+  },
+  {
+    image: testimonial4,
+    name: "BlackW",
+    review: "Five stars for the great service and delicious food!",
+  },
+];
+
+const Testimonial = () => {
+  return (
+    <div className="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+      <div className="container">
+        <div className="text-center">
+          <h5 className="section-title ff-secondary text-center text-primary fw-normal">
+            Testimonial
+          </h5>
+          <h1 className="mb-5">Our Clients Say!!!</h1>
+        </div>
+
+        {/* Testimonial Swiper */}
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={30}
+          pagination={{ clickable: true }}
+          navigation
+          loop={true} 
+          autoplay={{
+            delay: 2000, 
+            disableOnInteraction: false, 
+          }}
+          modules={[Navigation, Pagination, Autoplay]} 
+          className="testimonial-swiper"
+        >
+          {testimonials.map((testimonial, index) => (
+            <SwiperSlide key={index} className="testimonial-slide">
+              <div className="testimonial-card d-flex flex-column align-items-center text-center">
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="testimonial-img rounded-circle shadow"
+                />
+                <p className="testimonial-review mt-4">
+                  "{testimonial.review}"
+                </p>
+                <h5 className="testimonial-name text-primary mt-2">
+                  {testimonial.name}
+                </h5>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
+  );
+};
+
+export default Testimonial;

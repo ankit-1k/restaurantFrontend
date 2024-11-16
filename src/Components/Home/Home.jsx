@@ -22,7 +22,7 @@ const Home = ({ user }) => {
                                 <div class="p-4">
                                     <i class="fa fa-3x fa-user-tie text-primary mb-4"></i>
                                     <h5>Master Chefs</h5>
-                                    <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                                    <p>Our master chefs create culinary masterpieces with unmatched skill and passion.</p>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +31,7 @@ const Home = ({ user }) => {
                                 <div class="p-4">
                                     <i class="fa fa-3x fa-utensils text-primary mb-4"></i>
                                     <h5>Quality Food</h5>
-                                    <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                                    <p>Enjoy quality food crafted with fresh, premium ingredients every time.</p>
                                 </div>
                             </div>
                         </div>
@@ -40,7 +40,7 @@ const Home = ({ user }) => {
                                 <div class="p-4">
                                     <i class="fa fa-3x fa-cart-plus text-primary mb-4"></i>
                                     <h5>Online Order</h5>
-                                    <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                                    <p>Order your favorite dishes online and enjoy fresh flavors delivered fast.</p>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@ const Home = ({ user }) => {
                                 <div class="p-4">
                                     <i class="fa fa-3x fa-headset text-primary mb-4"></i>
                                     <h5>24/7 Service</h5>
-                                    <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                                    <p>Enjoy our 24/7 service, ensuring delicious meals and support anytime you need.</p>
                                 </div>
                             </div>
                         </div>

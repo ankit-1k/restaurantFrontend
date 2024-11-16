@@ -42,25 +42,32 @@ const AdminContact = () => {
   return (
     <div>
       <AdHeader />
-      <h2>Admin Contact Management</h2>
+      <div className="container">
+        <h2 className="mt-5">Admin Contact Management</h2>
 
-      {/* PrimeReact DataTable for displaying contact data */}
-      <DataTable value={contacts} paginator rows={10} responsiveLayout="scroll">
-        <Column field="name" header="Name" />
-        <Column field="email" header="Email" />
-        <Column field="subject" header="Subject" />
-        <Column field="message" header="Message" />
-        <Column
-          body={(rowData) => (
-            <Button
-              icon="pi pi-trash"
-              className="p-button-danger"
-              onClick={() => handleDelete(rowData._id)}
-            />
-          )}
-          header="Actions"
-        />
-      </DataTable>
+        <DataTable
+          className="mt-5"
+          value={contacts}
+          paginator
+          rows={10}
+          responsiveLayout="scroll"
+        >
+          <Column field="name" header="Name" />
+          <Column field="email" header="Email" />
+          <Column field="subject" header="Subject" />
+          <Column field="message" header="Message" />
+          <Column
+            body={(rowData) => (
+              <Button
+                icon="pi pi-trash"
+                className="p-button-danger"
+                onClick={() => handleDelete(rowData._id)}
+              />
+            )}
+            header="Actions"
+          />
+        </DataTable>
+      </div>
     </div>
   );
 };

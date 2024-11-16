@@ -2,8 +2,12 @@ import React from 'react'
 import img1 from './../../assets/img/about-1.jpg'
 import img2 from './../../assets/img/about-2.jpg'
 import img3 from './../../assets/img/about-3.jpg'
-import img4 from './../../assets/img/about-4.jpg'
+import { useNavigate } from 'react-router-dom'
+// import img4 from './../../assets/img/about-4.jpg'
+
 const About = () => {
+    const navigate=useNavigate()
+
   return (
     <div>
       {/* <!-- About Start --> */}
@@ -29,8 +33,8 @@ const About = () => {
                     <div class="col-lg-6">
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">About Us</h5>
                         <h1 class="mb-4">Welcome to <i class="fa fa-utensils text-primary me-2"></i>TasteOn</h1>
-                        <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos erat ipsum et lorem et sit, sed stet lorem sit.</p>
-                        <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                        <p class="mb-4">Discover the ultimate dining experience with flavors that delight your senses.</p>
+                        <p class="mb-4">At TasteOn, we blend passion and quality to serve meals you'll love, creating unforgettable moments every time.</p>
                         <div class="row g-4 mb-4">
                             <div class="col-sm-6">
                                 <div class="d-flex align-items-center border-start border-5 border-primary px-3">
@@ -51,7 +55,7 @@ const About = () => {
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-primary py-3 px-5 mt-2" href="">Read More</a>
+                        <button class="btn btn-primary py-3 px-5 mt-2" onClick={()=>navigate('/about')}>Read More</button>
                     </div>
                 </div>
             </div>

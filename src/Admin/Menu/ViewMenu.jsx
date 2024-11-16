@@ -210,7 +210,7 @@ const ViewMenu = () => {
               />
             </div>
           </div>
-          <Button label="Save" icon="pi pi-check" onClick={saveUpdate} />
+          <Button label="Save" className="mt-2" icon="pi pi-check" onClick={saveUpdate} />
         </Dialog>
       </div>
     </>
