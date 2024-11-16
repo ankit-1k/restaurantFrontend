@@ -111,9 +111,9 @@ const App = () => {
         <Route 
           path="/admincontact" 
           element={
-            <AdminRoute>
+            // <AdminRoute>
               <AdminContact />
-            </AdminRoute>
+            // </AdminRoute>
           } 
         />
       </Routes>
